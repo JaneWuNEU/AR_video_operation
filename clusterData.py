@@ -164,9 +164,25 @@ class ClusterData:
         #print(accuracy.shape)
         filePath = "F:\\project\\dataset\\vr\\Formated_Data\\Experiment_1/prediction_accuracy.xlsx"
         self.wrFile.writeDataIntoExcel(data = accuracy,filePath = filePath)
-        
+    def plotScatter(self,x,y,z,slot):
+        plt.scatter(x=x,y=y,c=z)
+        plt.xlabel("x",fontsize=20)
+        plt.ylabel("y",fontsize=20)
+        plt.legend("z",fontsize=20)
+        plt.show()
+        plt.savefig("F:\\project\\dataset\\vr\\Formated_Data\\Experiment_1\\image/xyz"+str(slot)+".png")
+    def plotPie(self,data):
+        #3 11 34
+        labels = ["class-1","class-2","class-3"]
+        sizes = data
+        plt.pie(sizes,labels = labels)
+        plt.show()
             
-
+    def plotPlot(self,x,y):
+        plt.plot(x,y,"-.")
+        plt.xlabel("time/second")
+        plt.ylabel("prediction precision")
+        plt.show()
             
         
    
@@ -206,9 +222,20 @@ class ClusterData:
         #return cluster_pointer    
         
 cluster = ClusterData()
-num = 1
-rows_record = []
-filePath = "F:\\project\\dataset\\vr\\Formated_Data\\Experiment_1/second.xlsx"
-cluster.getClassifer(Bmax = 5)
-#cluster.clusterData(filePath)
-
+filePath = "F:\\project\\dataset\\vr\\Formated_Data\\Experiment_1/prediction_accuracy.xlsx"
+data = numpy.array(cluster.wrFile.readDataFromExcel2(filePath = filePath))
+col = 115
+'''x = data[:,col*4].tolist()
+y = data[:,col*4+1].tolist()
+z = data[:,col*4+2].tolist()
+labels = data[:,col*4+3]
+mask0 = (labels==0) #统计label内个元素是否等于0，如果等于，mask0的相应位置去True，反之为false
+mask1 = (labels == 1)
+mask_1 = (labels ==-1)
+count_1 = labels[mask_1].size #获得mask_1取True时，labels的元素
+count0 = labels[mask0].size
+count1 = labels[mask1].size
+print(count_1,count0,count1)
+'''
+cluster.plotPlot(numpy.arange(1,data.shape[0]+1,1),data)
+#cluster.plotScatter(x,y,z,col)
